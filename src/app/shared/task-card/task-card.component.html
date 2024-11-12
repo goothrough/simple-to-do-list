@@ -13,9 +13,23 @@
             iaculis mauris.
         </div>
     </div>
-    <footer class="card-footer">
-        <a href="#" class="card-footer-item">Done</a>
-        <a href="#" class="card-footer-item">Edit</a>
-        <a href="#" class="card-footer-item">Delete</a>
-    </footer>
+    <ng-container *ngIf="mode === 'todo_view'">
+        <footer class="card-footer">
+            <a href="#" class="card-footer-item">Done</a>
+            <a href="#" class="card-footer-item">Edit</a>
+            <a href="#" class="card-footer-item">Delete</a>
+        </footer>
+    </ng-container>
+    <ng-container *ngIf="mode === 'edit'">
+        <footer class="card-footer">
+            <a href="#" class="card-footer-item">Save</a>
+            <a href="#" class="card-footer-item">Cancel</a>
+        </footer>
+    </ng-container>
+    <ng-container *ngIf="mode === 'done_view'">
+        <footer class="card-footer">
+            <a href="#" class="card-footer-item">Mark as TODO</a>
+        </footer>
+    </ng-container>
+
 </div>

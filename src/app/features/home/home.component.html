@@ -1,42 +1,7 @@
 <div class="container">
-    <!-- Input Form-->
-    <div class="field">
-        <label class="label">Task</label>
-        <div class="control">
-            <input class="input" type="text" placeholder="Text input">
-        </div>
-    </div>
-
-    <div class="field">
-        <label class="label">Subject</label>
-        <div class="control">
-            <div class="select">
-                <select>
-                    <option>Select dropdown</option>
-                    <option>With options</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <div class="field">
-        <label class="label">Description</label>
-        <div class="control">
-            <textarea class="textarea" placeholder="Textarea"></textarea>
-        </div>
-    </div>
-
-    <div class="field is-grouped">
-        <div class="control">
-            <button class="button is-link">Add</button>
-        </div>
-        <div class="control">
-            <button class="button is-link is-light">Clear</button>
-        </div>
-    </div>
 
     <!-- Show tasks-->
-    <div class="fixed-grid has-2-cols">
+    <!-- <div class="fixed-grid has-2-cols">
         <div class="grid">
             <div class="cell">
                 <section class="hero is-small is-info">
@@ -56,7 +21,45 @@
         </div>
     </div>
     <div class="grid">
+        <div class="cell"><app-task-card></app-task-card>
+            <button class="button" (click)="openDialog()">Open dialog</button>
+        </div>
         <div class="cell"><app-task-card></app-task-card></div>
-        <div class="cell"><app-task-card></app-task-card></div>
+    </div> -->
+
+    <!-- <div *ngFor="let taskCard of taskCardList">
+        <app-task-card [mode]="'todo_view'" [taskCardData]="taskCard"></app-task-card>
+    </div> -->
+
+    <div class="fixed-grid has-2-cols">
+        <div class="grid">
+            <div class="cell">
+                <section class="hero is-small is-info">
+                    <div class="hero-body">
+                        <p class="title">TODO</p>
+                    </div>
+                </section>
+                <div class="fixed-grid has-1-cols">
+                    <div class="cell" *ngFor="let taskCard of taskCardList.todo">
+                        <app-task-card [mode]="'todo_view'" [taskCardData]="taskCard"></app-task-card>
+                    </div>
+                </div>
+            </div>
+            <div class="cell">
+                <section class="hero is-small is-success">
+                    <div class="hero-body">
+                        <p class="title">DONE</p>
+                    </div>
+                </section>
+                <div class="fixed-grid has-1-cols">
+                    <div class="cell" *ngFor="let taskCard of taskCardList.todo">
+                        <app-task-card [mode]="'done_view'" [taskCardData]="taskCard"></app-task-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <button class="button" (click)="openAddTaskDialog()">Add Task</button>
 </div>
