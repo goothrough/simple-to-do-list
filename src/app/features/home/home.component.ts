@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskCardComponent, TaskCardData } from 'src/app/shared/task-card/task-card.component';
+import { TaskCardComponent, TaskCardData, EnumTaskCardMode } from 'src/app/shared/task-card/task-card.component';
 import { TaskService } from '../task/task.service';
 
 @Component({
@@ -9,9 +9,12 @@ import { TaskService } from '../task/task.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  taskCardList!: { 
+  taskCardList!: {
     todo: TaskCardData[];
-     done: TaskCardData[]; };
+    done: TaskCardData[];
+  };
+
+    TaskCardMode = EnumTaskCardMode;
 
   constructor(public dialog: MatDialog,
     private taskService: TaskService
@@ -36,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   openAddTaskDialog() {
     const dialogRef = this.dialog.open(TaskCardComponent, {
-      data: { mode: 'edit', taskCardData: { taskName: 'test', description: 'dummy', isDone: false } },
+      data: { mode: EnumTaskCardMode.ADD, taskCardData: { taskName: '', description: '', isDone: false } },
     });
 
     dialogRef.afterClosed().subscribe(result => {

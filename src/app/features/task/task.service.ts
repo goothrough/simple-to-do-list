@@ -40,17 +40,17 @@ export class TaskService {
   getTaskList() {
     const taskList: Task[] = [
       {
-        taskName: 'test name1',
+        taskName: 'homework',
         description: 'test desc1',
         isDone: false
       },
       {
-        taskName: 'test name2',
+        taskName: 'do the shopping',
         description: 'test desc2',
         isDone: false
       },
       {
-        taskName: 'test name3',
+        taskName: 'leetcode',
         description: 'test desc3',
         isDone: true
       },
