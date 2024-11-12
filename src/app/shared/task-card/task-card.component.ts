@@ -16,7 +16,7 @@ export type TaskCardData = {
 export class TaskCardComponent implements OnInit {
 
   @Input()
-  mode = 'todo_view'
+  mode = ''
 
   @Input()
   taskCardData!: TaskCardData;
@@ -32,6 +32,5 @@ export class TaskCardComponent implements OnInit {
       this.taskCardData = this.data.taskCardData;
     }
 
-    console.log(this.taskCardData)
   }
 }
