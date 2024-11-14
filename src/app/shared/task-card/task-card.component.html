@@ -1,6 +1,18 @@
 <div class="card">
     <header class="card-header">
-        <p class="card-header-title">{{taskCardData.taskName}}</p>
+        <div class="card-header-title">
+            <ng-container *ngIf="mode===TaskCardMode.VIEW_TODO||mode===TaskCardMode.VIEW_DONE">
+                {{taskCardData.taskName}}
+            </ng-container>
+            <ng-container *ngIf="mode===TaskCardMode.EDIT||mode===TaskCardMode.ADD">
+                <div class="field">
+                    <label class="label">Task Name</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input" type="text" placeholder="" value="{{taskCardData.taskName}}">
+                    </div>
+                </div>
+            </ng-container>
+        </div>
         <!-- Expand button -->
         <ng-container *ngIf="mode===TaskCardMode.VIEW_TODO||mode===TaskCardMode.VIEW_DONE">
             <button class="card-header-icon" aria-label="more options" (click)="toggleContent()">
