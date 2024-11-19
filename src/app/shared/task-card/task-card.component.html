@@ -1,99 +1,131 @@
 <div class="card">
-    <header class="card-header">
-        <div class="card-header-title">
+    <form [formGroup]="taskCardForm" (ngSubmit)="onSubmit()">
+        <header class="card-header">
+            <div class="card-header-title">
+                <ng-container *ngIf="mode===TaskCardMode.VIEW_TODO||mode===TaskCardMode.VIEW_DONE">
+                    {{taskCardData.taskName}}
+                </ng-container>
+                <ng-container *ngIf="mode===TaskCardMode.EDIT||mode===TaskCardMode.ADD">
+                    <div class="field">
+                        <label class="label">Task Name</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input" type="text" placeholder="" formControlName="taskName">
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <!-- Expand button -->
             <ng-container *ngIf="mode===TaskCardMode.VIEW_TODO||mode===TaskCardMode.VIEW_DONE">
-                {{taskCardData.taskName}}
+                <button class="card-header-icon" aria-label="more options" (click)="toggleContent()">
+                    <ng-container *ngIf="isContentOpen">
+                        <span class="icon">
+                            <i class="fas fa-angle-up" aria-hidden="true"></i>
+                        </span>
+                    </ng-container>
+                    <ng-container *ngIf="!isContentOpen">
+                        <span class="icon">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </ng-container>
+                </button>
             </ng-container>
+        </header>
+
+        <!-- Content -->
+        <div *ngIf="isContentOpen" class="card-content">
+            <div class="content">
+                <ng-container *ngIf="mode===TaskCardMode.VIEW_TODO||mode===TaskCardMode.VIEW_DONE">
+                    {{taskCardData.description}}
+                </ng-container>
+            </div>
             <ng-container *ngIf="mode===TaskCardMode.EDIT||mode===TaskCardMode.ADD">
                 <div class="field">
-                    <label class="label">Task Name</label>
+                    <label class="label">Description</label>
                     <div class="control has-icons-left has-icons-right">
-                        <input class="input" type="text" placeholder="" value="{{taskCardData.taskName}}">
+                        <input class="input" type="text" placeholder="" formControlName="description">
                     </div>
                 </div>
             </ng-container>
         </div>
-        <!-- Expand button -->
-        <ng-container *ngIf="mode===TaskCardMode.VIEW_TODO||mode===TaskCardMode.VIEW_DONE">
-            <button class="card-header-icon" aria-label="more options" (click)="toggleContent()">
-                <ng-container *ngIf="isContentOpen">
+
+        <!-- Footer -->
+        <!-- Todo view -->
+        <ng-container *ngIf="mode === TaskCardMode.VIEW_TODO">
+            <footer class="card-footer">
+                <button class="button card-footer-item" type="submit">
                     <span class="icon">
-                        <i class="fas fa-angle-up" aria-hidden="true"></i>
+                        <i class="fas fa-check" aria-hidden="true"></i>
                     </span>
-                </ng-container>
-                <ng-container *ngIf="!isContentOpen">
+                    <span>Done</span>
+                </button>
+                <button class="button card-footer-item" type="button" (click)="openEditDialog()">
                     <span class="icon">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        <i class="fas fa-pen-to-square" aria-hidden="true"></i>
                     </span>
-                </ng-container>
-            </button>
+                    <span>Edit</span>
+                </button>
+                <button class="button card-footer-item" type="button" (click)="openDeleteDialog()">
+                    <span class="icon">
+                        <i class="fas fa-trash" aria-hidden="true"></i>
+                    </span>
+                    <span>Delete</span>
+                </button>
+            </footer>
         </ng-container>
-    </header>
-
-    <!-- Content -->
-    <div *ngIf="isContentOpen" class="card-content">
-        <div class="content">
-            {{taskCardData.description}}
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <!-- Todo view -->
-    <ng-container *ngIf="mode === TaskCardMode.VIEW_TODO">
-        <footer class="card-footer">
-            <button class="button card-footer-item">
-                <span class="icon">
-                    <i class="fas fa-check" aria-hidden="true"></i>
-                </span>
-                <span>Done</span>
-            </button>
-            <button class="button card-footer-item" (click)="openEditDialog()">
-                <span class="icon">
-                    <i class="fas fa-pen-to-square" aria-hidden="true"></i>
-                </span>
-                <span>Edit</span>
-            </button>
-            <button class="button card-footer-item" (click)="openDeleteDialog()">
-                <span class="icon">
-                    <i class="fas fa-trash" aria-hidden="true"></i>
-                </span>
-                <span>Delete</span>
-            </button>
-        </footer>
-    </ng-container>
-    <!-- Edit -->
-    <ng-container *ngIf="mode === TaskCardMode.EDIT||mode===TaskCardMode.ADD">
-        <footer class="card-footer">
-            <button class="button card-footer-item" (click)="onMarkAsTodo()">
-                <span class="icon">
-                    <i class="fas fa-circle-check" aria-hidden="true"></i>
-                </span>
-                <span>
-                    Save
-                </span>
-            </button>
-            <button class="button card-footer-item" (click)="onMarkAsTodo()">
-                <span class="icon">
-                    <i class="fas fa-xmark" aria-hidden="true"></i>
-                </span>
-                <span>
-                    Cancel
-                </span>
-            </button>
-        </footer>
-    </ng-container>
-    <!-- Done view -->
-    <ng-container *ngIf="mode === TaskCardMode.VIEW_DONE">
-        <footer class="card-footer">
-            <button class="button card-footer-item" (click)="onMarkAsTodo()">
-                <span class="icon">
-                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
-                </span>
-                <span>
-                    Mark as TODO
-                </span>
-            </button>
-        </footer>
-    </ng-container>
-
+        <!-- Add -->
+        <ng-container *ngIf="mode===TaskCardMode.ADD">
+            <footer class="card-footer">
+                <button class="button card-footer-item" type="submit">
+                    <span class="icon">
+                        <i class="fas fa-circle-plus" aria-hidden="true"></i>
+                    </span>
+                    <span>
+                        Add
+                    </span>
+                </button>
+                <button class="button card-footer-item" type="button" (click)="onCancel()">
+                    <span class="icon">
+                        <i class="fas fa-xmark" aria-hidden="true"></i>
+                    </span>
+                    <span>
+                        Cancel
+                    </span>
+                </button>
+            </footer>
+        </ng-container>
+        <!-- Edit -->
+        <ng-container *ngIf="mode === TaskCardMode.EDIT">
+            <footer class="card-footer">
+                <button class="button card-footer-item" type="submit">
+                    <span class="icon">
+                        <i class="fas fa-circle-check" aria-hidden="true"></i>
+                    </span>
+                    <span>
+                        Save
+                    </span>
+                </button>
+                <button class="button card-footer-item" type="button" (click)="onCancel()">
+                    <span class="icon">
+                        <i class="fas fa-xmark" aria-hidden="true"></i>
+                    </span>
+                    <span>
+                        Cancel
+                    </span>
+                </button>
+            </footer>
+        </ng-container>
+        <!-- Done view -->
+        <ng-container *ngIf="mode === TaskCardMode.VIEW_DONE">
+            <footer class="card-footer">
+                <button class="button card-footer-item" type="submit">
+                    <span class="icon">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                    </span>
+                    <span>
+                        Mark as TODO
+                    </span>
+                </button>
+            </footer>
+        </ng-container>
+    </form>
 </div>

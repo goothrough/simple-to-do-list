@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskCardComponent, TaskCardData, EnumTaskCardMode } from 'src/app/shared/task-card/task-card.component';
-import { TaskService } from '../task/task.service';
+import { Task, TaskService } from '../task/task.service';
 
 @Component({
   selector: 'app-home',
@@ -14,27 +14,45 @@ export class HomeComponent implements OnInit {
     done: TaskCardData[];
   };
 
-    TaskCardMode = EnumTaskCardMode;
+  TaskCardMode = EnumTaskCardMode;
 
   constructor(public dialog: MatDialog,
     private taskService: TaskService
-  ) { }
+  ) {
+    this.taskCardList = {
+      todo: [],
+      done: []
+    }
+  }
 
 
   ngOnInit(): void {
-    this.taskCardList = this.convertTaskListToTaskCardList();
-    console.log(this.taskCardList)
+    this.taskService.getDataFromMockServer().subscribe(t => {
+      this.taskCardList = this.getClassifiedTaskList(this.convertTaskListToTaskCardList(t));
+    })
   }
 
-  convertTaskListToTaskCardList() {
-    const classifiedTaskList = this.taskService.getClassifiedTaskList();
-    Object.keys(classifiedTaskList).forEach(key => {
-      classifiedTaskList[key] = classifiedTaskList[key].map(task => {
-        return { taskName: task.taskName, description: task.description, isDone: task.isDone }
-      });
-    })
+  getClassifiedTaskList(plainTaskList: TaskCardData[]) {
+    const todoList: TaskCardData[] = [];
+    const doneList: TaskCardData[] = [];
 
-    return classifiedTaskList;
+    plainTaskList.forEach(task => {
+      if (task.isDone) {
+        doneList.push(task);
+      } else {
+        todoList.push(task);
+      }
+    });
+
+    return {
+      todo: todoList,
+      done: doneList,
+    }
+  };
+
+
+  convertTaskListToTaskCardList(taskList: Task[]): TaskCardData[] {
+    return taskList.map(t => { return { taskName: t.taskName, description: t.description, isDone: t.isDone } });
   }
 
   openAddTaskDialog() {
@@ -46,4 +64,5 @@ export class HomeComponent implements OnInit {
       console.log(`Dialog result: ${result}`);
     });
   }
+
 }

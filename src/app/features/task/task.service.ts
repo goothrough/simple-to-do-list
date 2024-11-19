@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TaskCardData } from 'src/app/shared/task-card/task-card.component';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 export type Task = {
   taskName: string;
@@ -18,45 +18,40 @@ export type ClassifiedTaskList = {
 })
 export class TaskService {
 
-  constructor() { }
+  // temporary task list
+  taskList: Task[] = [
+    {
+      taskName: 'homework',
+      description: 'test desc1',
+      isDone: false
+    },
+    {
+      taskName: 'do the shopping',
+      description: 'test desc2',
+      isDone: false
+    },
+    {
+      taskName: 'leetcode',
+      description: 'test desc3',
+      isDone: true
+    },
 
+  ]
 
-  getClassifiedTaskList() {
-    const classifiedTaskList: ClassifiedTaskList = {
-      todo: [],
-      done: []
-    }
-    this.getTaskList().forEach(task => {
-      if (task.isDone) {
-        classifiedTaskList.done.push(task);
-      } else {
-        classifiedTaskList.todo.push(task);
-      }
-    })
+  private taskList$ = new BehaviorSubject<Task[]>(this.taskList);
 
-    return classifiedTaskList;
+  constructor() {
   }
 
-  getTaskList() {
-    const taskList: Task[] = [
-      {
-        taskName: 'homework',
-        description: 'test desc1',
-        isDone: false
-      },
-      {
-        taskName: 'do the shopping',
-        description: 'test desc2',
-        isDone: false
-      },
-      {
-        taskName: 'leetcode',
-        description: 'test desc3',
-        isDone: true
-      },
-
-    ]
-
-    return taskList;
+  addTask(task: Task) {
+    console.log(task);
+    this.taskList.push(task);
+    this.taskList$.next(this.taskList);
   }
+
+  getDataFromMockServer(): Observable<Task[]> {
+    return this.taskList$.asObservable();
+
+  }
+
 }
