@@ -2,10 +2,10 @@ import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TaskService } from 'src/app/features/task/service/task.service';
-import { AddTaskServiceInDto, TaskView as TaskViewData, UpdateTaskServiceInDto } from '../model/task.dto';
+import { AddTaskServiceInDto, MarkAsDoneServiceInDto, MarkAsTodoServiceInDto, TaskView as TaskViewData, UpdateTaskServiceInDto } from '../model/task.dto';
 
 export type TaskCardData = {
-  id: number;
+  id: string;
   taskName: string;
   description: string;
   isDone: boolean
@@ -86,6 +86,11 @@ export class TaskComponent implements OnInit {
 
   onMarkAsDone() {
     console.log('Done');
+    const serviceInDto: MarkAsDoneServiceInDto = {
+      id: this.taskViewData.id,
+      isDone: true
+    }
+    this.taskService.markTaskAsDone(serviceInDto);
   }
 
   openEditDialog() {
@@ -113,6 +118,11 @@ export class TaskComponent implements OnInit {
 
   onMarkAsTodo() {
     console.log('Todo');
+    const serviceInDto: MarkAsTodoServiceInDto = {
+      id: this.taskViewData.id,
+      isDone: false
+    }
+    this.taskService.markTaskAsTodo(serviceInDto);
   }
 
   onSave() {
@@ -133,7 +143,10 @@ export class TaskComponent implements OnInit {
       name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
       description: this.taskCardForm.value.description ? this.taskCardForm.value.description : '',
     }
+
+    // Add a task
     this.taskService.addTask(serviceInDto);
+
     this.dialogRef.close();
   }
 

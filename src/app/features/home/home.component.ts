@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskComponent, TaskCardData, EnumTaskCardMode } from 'src/app/features/task/component/task.component';
+import { TaskComponent, EnumTaskCardMode } from 'src/app/features/task/component/task.component';
 import { TaskService } from '../task/service/task.service';
-import { GetTaskApiResponse, TaskView } from '../task/model/task.dto';
+import { TaskApiModel, TaskView } from '../task/model/task.dto';
 
 @Component({
   selector: 'app-home',
@@ -28,12 +28,14 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.taskService.getDataFromMockServer().subscribe(t => {
+    this.taskService.getTasks().subscribe(t => {
       this.taskCardList = this.getClassifiedTaskList(this.convertTaskListToTaskCardList(t));
     })
+
+    this.taskService.getTasks().subscribe(t => { console.log(t) })
   }
 
-  getClassifiedTaskList(plainTaskList: GetTaskApiResponse[]) {
+  getClassifiedTaskList(plainTaskList: TaskView[]) {
     const todoList: TaskView[] = [];
     const doneList: TaskView[] = [];
 
@@ -51,8 +53,15 @@ export class HomeComponent implements OnInit {
     }
   };
 
-  convertTaskListToTaskCardList(taskList: GetTaskApiResponse[]): TaskView[] {
-    return taskList.map(t => { return { id: t.id, name: t.name, description: t.description, isDone: t.isDone } });
+  convertTaskListToTaskCardList(taskList: TaskApiModel[]): TaskView[] {
+    return taskList.map(t => {
+      return {
+        id: t.id ? t.id : '',
+        name: t.name ? t.name : '',
+        description: t.description ? t.description : '',
+        isDone: t.isDone ? t.isDone : false
+      }
+    });
   }
 
   openAddTaskDialog() {

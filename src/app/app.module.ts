@@ -8,6 +8,9 @@ import { TaskComponent } from './features/task/component/task.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     NoopAnimationsModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

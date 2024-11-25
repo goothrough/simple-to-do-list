@@ -1,87 +1,79 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { AddTaskApiRequest, AddTaskServiceInDto, GetTaskApiResponse, UpdateTaskApiRequest, UpdateTaskServiceInDto } from '../model/task.dto';
+import { AddTaskServiceInDto, MarkAsDoneServiceInDto, MarkAsTodoServiceInDto, TaskApiModel, UpdateTaskServiceInDto } from '../model/task.dto';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  // temporary task list
-  taskList: GetTaskApiResponse[] = [
-    {
-      id: 1,
-      name: 'homework',
-      description: 'test desc1',
-      isDone: false
-    },
-    {
-      id: 2,
-      name: 'do the shopping',
-      description: 'test desc2',
-      isDone: false
-    },
-    {
-      id: 3,
-      name: 'leetcode',
-      description: 'test desc3',
-      isDone: true
-    },
-
-  ]
-
-  private taskList$ = new BehaviorSubject<GetTaskApiResponse[]>(this.taskList);
-
-  constructor() {
+  constructor(private firestore: AngularFirestore) {
   }
 
+  private taskCollection = this.firestore.collection<TaskApiModel>('tasks', (ref) =>
+    ref
+  );
+
+
+  // Get all tasks from server
+  getTasks(): Observable<TaskApiModel[]> {
+    return this.taskCollection.valueChanges({ idField: 'id' });
+  }
+
+  // Add a task
   addTask(serviceInDto: AddTaskServiceInDto) {
-    const request: AddTaskApiRequest = {
-      id: this.taskList.length + 1,
+    const request: TaskApiModel = {
       isDone: false,
       ...serviceInDto
     }
 
     // Request to Server
-    this.addTaskAsMockServer(request);
-    this.taskList$.next(this.taskList);
+    this.taskCollection.add(request).catch(e => {
+      console.error("Error during adding a task", e);
+    });
   }
 
+  // Update a task
   updateTask(serviceInDto: UpdateTaskServiceInDto) {
     console.log("update")
-    const request: UpdateTaskApiRequest = {
-      id: serviceInDto.id,
+    const request: TaskApiModel = {
       name: serviceInDto.name,
-      description: serviceInDto.description
+      description: serviceInDto.description,
     }
 
     // Request to Server
-    this.updateTaskAsMockServer(request);
-    this.taskList$.next(this.taskList);
-
+    this.taskCollection.doc(serviceInDto.id).update(request).catch(e => {
+      console.error("Error during updating a task", e);
+    });
   }
 
-  getDataFromMockServer(): Observable<GetTaskApiResponse[]> {
-    return this.taskList$.asObservable();
-
-  }
-
-  addTaskAsMockServer(request: AddTaskApiRequest) {
-    const task: GetTaskApiResponse = {
-      id: request.id,
-      name: request.name,
-      description: request.description,
-      isDone: request.isDone
+  // Mark a task as Done
+  markTaskAsDone(serviceInDto: MarkAsDoneServiceInDto) {
+    console.log("mark as done")
+    const request: TaskApiModel = {
+      isDone: serviceInDto.isDone
     }
-    this.taskList.push(task);
+
+    // Request to Server
+    this.taskCollection.doc(serviceInDto.id).update(request).catch(e => {
+      console.error("Error during marking a task as done", e);
+    });
   }
 
-  updateTaskAsMockServer(request: UpdateTaskApiRequest) {
-    console.log(request);
-    this.taskList = this.taskList.map(task =>
-      task.id === request.id ? { ...task, name: request.name, description: request.description } : task
-    );
-    console.log(this.taskList)
+  // Mark a task as Todo
+  markTaskAsTodo(serviceInDto: MarkAsTodoServiceInDto) {
+    console.log("mark as todo")
+    const request: TaskApiModel = {
+      isDone: serviceInDto.isDone
+    }
+
+    // Request to Server
+    this.taskCollection.doc(serviceInDto.id).update(request).catch(e => {
+      console.error("Error during marking a task as todo", e);
+    });
   }
+
+
 
 }

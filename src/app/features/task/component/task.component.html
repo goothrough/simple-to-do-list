@@ -16,7 +16,7 @@
             </div>
             <!-- Expand button -->
             <ng-container *ngIf="mode===TaskCardMode.VIEW_TODO||mode===TaskCardMode.VIEW_DONE">
-                <button class="card-header-icon" aria-label="more options" (click)="toggleContent()">
+                <button class="card-header-icon" aria-label="more options" type="button" (click)="toggleContent()">
                     <ng-container *ngIf="isContentOpen">
                         <span class="icon">
                             <i class="fas fa-angle-up" aria-hidden="true"></i>

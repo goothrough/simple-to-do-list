@@ -1,12 +1,12 @@
 export interface TaskView {
-    id: number;
+    id: string;
     name: string;
     description: string;
     isDone: boolean
 }
 
 export interface GetTaskServiceOutDto {
-    id: number;
+    id: string;
     name: string;
     description: string;
     isDone: boolean
@@ -18,55 +18,28 @@ export interface AddTaskServiceInDto {
 }
 
 export interface UpdateTaskServiceInDto {
-    id: number;
+    id: string;
     name: string;
     description: string;
 }
 
 export interface DeleteTaskServiceInDto {
-    id: number;
+    id: string;
 }
 
 export interface MarkAsTodoServiceInDto {
-    id: number;
+    id: string;
     isDone: boolean;
 }
 
 export interface MarkAsDoneServiceInDto {
-    id: number;
+    id: string;
     isDone: boolean;
 }
 
-export interface GetTaskApiResponse {
-    id: number;
-    name: string;
-    description: string;
-    isDone: boolean
-}
-
-export interface AddTaskApiRequest {
-    id: number;
-    name: string;
-    description: string;
-    isDone: boolean;
-}
-
-export interface UpdateTaskApiRequest {
-    id: number;
-    name: string;
-    description: string;
-}
-
-export interface DeleteTaskApiRequest {
-    id: number;
-}
-
-export interface MarkAsTodoApiRequest {
-    id: number;
-    isDone: boolean;
-}
-
-export interface MarkAsDoneApiRequest {
-    id: number;
-    isDone: boolean;
+export interface TaskApiModel {
+    id?: string;
+    name?: string;
+    description?: string;
+    isDone?: boolean
 }
