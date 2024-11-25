@@ -1,9 +1,11 @@
 import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TaskService } from 'src/app/features/task/task.service';
+import { TaskService } from 'src/app/features/task/service/task.service';
+import { AddTaskServiceInDto, TaskView as TaskViewData, UpdateTaskServiceInDto } from '../model/task.dto';
 
 export type TaskCardData = {
+  id: number;
   taskName: string;
   description: string;
   isDone: boolean
@@ -17,30 +19,30 @@ export enum EnumTaskCardMode {
 }
 
 @Component({
-  selector: 'app-task-card',
-  templateUrl: './task-card.component.html',
-  styleUrls: ['./task-card.component.scss']
+  selector: 'app-task',
+  templateUrl: './task.component.html',
+  styleUrls: ['./task.component.scss']
 })
-export class TaskCardComponent implements OnInit {
+export class TaskComponent implements OnInit {
 
   @Input()
   mode!: EnumTaskCardMode;
 
   @Input()
-  taskCardData!: TaskCardData;
+  taskViewData!: TaskViewData;
 
   isContentOpen: boolean = false;
 
   TaskCardMode = EnumTaskCardMode;
 
-  taskCardForm!: FormGroup<{ taskName: FormControl<string | null>; description: FormControl<string | null>; }>;;
+  taskCardForm!: FormGroup<{ name: FormControl<string | null>; description: FormControl<string | null>; }>;;
 
-  constructor(@Optional() public dialogRef: MatDialogRef<TaskCardComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: { mode: EnumTaskCardMode, taskCardData: TaskCardData },
+  constructor(@Optional() public dialogRef: MatDialogRef<TaskComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: { mode: EnumTaskCardMode, taskViewData: TaskViewData },
     public dialog: MatDialog, private taskService: TaskService) {
 
     this.taskCardForm = new FormGroup({
-      taskName: new FormControl(''),
+      name: new FormControl(''),
       description: new FormControl(''),
     });
 
@@ -50,9 +52,9 @@ export class TaskCardComponent implements OnInit {
     if (this.data != null) {
       this.isContentOpen = true;
       this.mode = this.data.mode;
-      this.taskCardData = this.data.taskCardData;
+      this.taskViewData = this.data.taskViewData;
       this.taskCardForm.setValue(
-        { taskName: this.data.taskCardData.taskName, description: this.data.taskCardData.description }
+        { name: this.data.taskViewData.name, description: this.data.taskViewData.description }
       );
     }
 
@@ -88,13 +90,14 @@ export class TaskCardComponent implements OnInit {
 
   openEditDialog() {
     console.log('Edit');
-    const dialogRef = this.dialog.open(TaskCardComponent, {
+    const dialogRef = this.dialog.open(TaskComponent, {
       data: {
         mode: EnumTaskCardMode.EDIT,
-        taskCardData: {
-          taskName: this.taskCardData.taskName,
-          description: this.taskCardData.description,
-          isDone: this.taskCardData.isDone
+        taskViewData: {
+          id: this.taskViewData.id,
+          name: this.taskViewData.name,
+          description: this.taskViewData.description,
+          isDone: this.taskViewData.isDone
         }
       },
     });
@@ -114,17 +117,23 @@ export class TaskCardComponent implements OnInit {
 
   onSave() {
     console.log("Save");
+    const serviceInDto: UpdateTaskServiceInDto = {
+      id: this.taskViewData.id,
+      name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
+      description: this.taskCardForm.value.description ? this.taskCardForm.value.description : '',
+    }
+    this.taskService.updateTask(serviceInDto);
+
     this.dialogRef.close();
   }
 
   onAdd() {
     console.log("Add");
-    const task = {
-      taskName: this.taskCardForm.value.taskName ? this.taskCardForm.value.taskName : '',
+    const serviceInDto: AddTaskServiceInDto = {
+      name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
       description: this.taskCardForm.value.description ? this.taskCardForm.value.description : '',
-      isDone: false
     }
-    this.taskService.addTask(task);
+    this.taskService.addTask(serviceInDto);
     this.dialogRef.close();
   }
 

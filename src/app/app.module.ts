@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './features/home/home.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
-import { TaskCardComponent } from './shared/task-card/task-card.component';
+import { TaskComponent } from './features/task/component/task.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,7 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    TaskCardComponent,
+    TaskComponent,
   ],
   imports: [
     BrowserModule,

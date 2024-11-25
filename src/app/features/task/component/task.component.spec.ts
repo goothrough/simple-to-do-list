@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaskCardComponent } from './task-card.component';
+import { TaskComponent } from './task.component';
 
 describe('TaskCardComponent', () => {
-  let component: TaskCardComponent;
-  let fixture: ComponentFixture<TaskCardComponent>;
+  let component: TaskComponent;
+  let fixture: ComponentFixture<TaskComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskCardComponent]
+      declarations: [TaskComponent]
     });
-    fixture = TestBed.createComponent(TaskCardComponent);
+    fixture = TestBed.createComponent(TaskComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

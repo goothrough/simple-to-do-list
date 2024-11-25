@@ -3,6 +3,7 @@
     <!-- Show tasks-->
     <div class="fixed-grid has-2-cols">
         <div class="grid">
+            <!-- Todo View-->
             <div class="cell">
                 <section class="hero is-small is-info">
                     <div class="hero-body">
@@ -11,13 +12,14 @@
                 </section>
                 <div class="fixed-grid has-1-cols">
                     <div class="cell p-2" *ngFor="let taskCard of taskCardList.todo">
-                        <app-task-card [mode]=TaskCardMode.VIEW_TODO [taskCardData]="taskCard"></app-task-card>
+                        <app-task [mode]=TaskCardMode.VIEW_TODO [taskViewData]="taskCard"></app-task>
                     </div>
                     <div class="cell p-2">
                         <button class="button" (click)="openAddTaskDialog()">Add Task</button>
                     </div>
                 </div>
             </div>
+            <!-- Done View-->
             <div class="cell">
                 <section class="hero is-small is-success">
                     <div class="hero-body">
@@ -26,7 +28,7 @@
                 </section>
                 <div class="fixed-grid has-1-cols">
                     <div class="cell p-2" *ngFor="let taskCard of taskCardList.done">
-                        <app-task-card [mode]=TaskCardMode.VIEW_DONE [taskCardData]="taskCard"></app-task-card>
+                        <app-task [mode]=TaskCardMode.VIEW_DONE [taskViewData]="taskCard"></app-task>
                     </div>
                 </div>
             </div>

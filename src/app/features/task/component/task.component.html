@@ -3,13 +3,13 @@
         <header class="card-header">
             <div class="card-header-title">
                 <ng-container *ngIf="mode===TaskCardMode.VIEW_TODO||mode===TaskCardMode.VIEW_DONE">
-                    {{taskCardData.taskName}}
+                    {{taskViewData.name}}
                 </ng-container>
                 <ng-container *ngIf="mode===TaskCardMode.EDIT||mode===TaskCardMode.ADD">
                     <div class="field">
                         <label class="label">Task Name</label>
                         <div class="control has-icons-left has-icons-right">
-                            <input class="input" type="text" placeholder="" formControlName="taskName">
+                            <input class="input" type="text" placeholder="" formControlName="name">
                         </div>
                     </div>
                 </ng-container>
@@ -35,7 +35,7 @@
         <div *ngIf="isContentOpen" class="card-content">
             <div class="content">
                 <ng-container *ngIf="mode===TaskCardMode.VIEW_TODO||mode===TaskCardMode.VIEW_DONE">
-                    {{taskCardData.description}}
+                    {{taskViewData.description}}
                 </ng-container>
             </div>
             <ng-container *ngIf="mode===TaskCardMode.EDIT||mode===TaskCardMode.ADD">

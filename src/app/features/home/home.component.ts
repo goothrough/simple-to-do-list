@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskCardComponent, TaskCardData, EnumTaskCardMode } from 'src/app/shared/task-card/task-card.component';
-import { Task, TaskService } from '../task/task.service';
+import { TaskComponent, TaskCardData, EnumTaskCardMode } from 'src/app/features/task/component/task.component';
+import { TaskService } from '../task/service/task.service';
+import { GetTaskApiResponse, TaskView } from '../task/model/task.dto';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +11,8 @@ import { Task, TaskService } from '../task/task.service';
 })
 export class HomeComponent implements OnInit {
   taskCardList!: {
-    todo: TaskCardData[];
-    done: TaskCardData[];
+    todo: TaskView[];
+    done: TaskView[];
   };
 
   TaskCardMode = EnumTaskCardMode;
@@ -32,9 +33,9 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getClassifiedTaskList(plainTaskList: TaskCardData[]) {
-    const todoList: TaskCardData[] = [];
-    const doneList: TaskCardData[] = [];
+  getClassifiedTaskList(plainTaskList: GetTaskApiResponse[]) {
+    const todoList: TaskView[] = [];
+    const doneList: TaskView[] = [];
 
     plainTaskList.forEach(task => {
       if (task.isDone) {
@@ -50,14 +51,13 @@ export class HomeComponent implements OnInit {
     }
   };
 
-
-  convertTaskListToTaskCardList(taskList: Task[]): TaskCardData[] {
-    return taskList.map(t => { return { taskName: t.taskName, description: t.description, isDone: t.isDone } });
+  convertTaskListToTaskCardList(taskList: GetTaskApiResponse[]): TaskView[] {
+    return taskList.map(t => { return { id: t.id, name: t.name, description: t.description, isDone: t.isDone } });
   }
 
   openAddTaskDialog() {
-    const dialogRef = this.dialog.open(TaskCardComponent, {
-      data: { mode: EnumTaskCardMode.ADD, taskCardData: { taskName: '', description: '', isDone: false } },
+    const dialogRef = this.dialog.open(TaskComponent, {
+      data: { mode: EnumTaskCardMode.ADD, taskViewData: { name: '', description: '', isDone: false } },
     });
 
     dialogRef.afterClosed().subscribe(result => {
