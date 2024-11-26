@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { AddTaskServiceInDto, MarkAsDoneServiceInDto, MarkAsTodoServiceInDto, TaskApiModel, UpdateTaskServiceInDto } from '../model/task.dto';
+import { AddTaskServiceInDto, DeleteTaskServiceInDto, MarkAsDoneServiceInDto, MarkAsTodoServiceInDto, TaskApiModel, UpdateTaskServiceInDto } from '../model/task.dto';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
@@ -72,6 +72,17 @@ export class TaskService {
     this.taskCollection.doc(serviceInDto.id).update(request).catch(e => {
       console.error("Error during marking a task as todo", e);
     });
+  }
+
+  // Delete a task
+  deleteTask(serviceInDto: DeleteTaskServiceInDto) {
+    console.log("delete");
+    
+    // Request to Server
+    this.taskCollection.doc(serviceInDto.id).delete().catch(e => {
+      console.error("Error during deleting a task as todo", e);
+    });
+
   }
 
 

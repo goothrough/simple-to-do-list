@@ -2,7 +2,7 @@ import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TaskService } from 'src/app/shared/task/service/task.service';
-import { AddTaskServiceInDto, MarkAsDoneServiceInDto, MarkAsTodoServiceInDto, TaskView as TaskViewData, UpdateTaskServiceInDto } from '../model/task.dto';
+import { AddTaskServiceInDto, DeleteTaskServiceInDto, MarkAsDoneServiceInDto, MarkAsTodoServiceInDto, TaskView as TaskViewData, UpdateTaskServiceInDto } from '../model/task.dto';
 
 export type TaskCardData = {
   id: string;
@@ -112,8 +112,17 @@ export class TaskComponent implements OnInit {
     });
   }
 
-  openDeleteDialog() {
+  onDelete() {
     console.log('Delete');
+    const isOkayToDelete: boolean = confirm("Are you sure to delete this task?")
+    if (isOkayToDelete) {
+      const serviceInDto: DeleteTaskServiceInDto = {
+        id: this.taskViewData.id
+      }
+      
+      this.taskService.deleteTask(serviceInDto);
+    }
+
   }
 
   onMarkAsTodo() {
