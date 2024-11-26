@@ -5,13 +5,6 @@ export interface TaskView {
     isDone: boolean
 }
 
-export interface GetTaskServiceOutDto {
-    id: string;
-    name: string;
-    description: string;
-    isDone: boolean
-}
-
 export interface AddTaskServiceInDto {
     name: string;
     description: string;
