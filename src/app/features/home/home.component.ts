@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskComponent, EnumTaskCardMode } from 'src/app/features/task/component/task.component';
-import { TaskService } from '../task/service/task.service';
-import { TaskApiModel, TaskView } from '../task/model/task.dto';
+import { TaskComponent, EnumTaskCardMode } from 'src/app/shared/task/component/task.component';
+import { TaskService } from '../../shared/task/service/task.service';
+import { TaskApiModel, TaskView } from '../../shared/task/model/task.dto';
 
 @Component({
   selector: 'app-home',

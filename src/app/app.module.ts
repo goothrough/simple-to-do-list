@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './features/home/home.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
-import { TaskComponent } from './features/task/component/task.component';
+import { TaskComponent } from './shared/task/component/task.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
