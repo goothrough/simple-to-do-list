@@ -5,29 +5,29 @@
         <div class="grid">
             <!-- Todo View-->
             <div class="cell">
-                <section class="hero is-small is-info">
+                <section class="hero is-small section-header-todo">
                     <div class="hero-body">
                         <p class="title is-size-6">TODO</p>
                     </div>
                 </section>
                 <div class="fixed-grid has-1-cols">
-                    <div class="cell p-2" *ngFor="let taskCard of taskCardList.todo">
+                    <div class="cell p-1" *ngFor="let taskCard of taskCardList.todo">
                         <app-task [mode]=TaskCardMode.VIEW_TODO [taskViewData]="taskCard"></app-task>
                     </div>
-                    <div class="cell p-2">
+                    <div class="cell p-1">
                         <button class="button" (click)="openAddTaskDialog()">Add Task</button>
                     </div>
                 </div>
             </div>
             <!-- Done View-->
             <div class="cell">
-                <section class="hero is-small is-success">
+                <section class="hero is-small section-header-done">
                     <div class="hero-body">
                         <p class="title is-size-6">DONE</p>
                     </div>
                 </section>
                 <div class="fixed-grid has-1-cols">
-                    <div class="cell p-2" *ngFor="let taskCard of taskCardList.done">
+                    <div class="cell p-1" *ngFor="let taskCard of taskCardList.done">
                         <app-task [mode]=TaskCardMode.VIEW_DONE [taskViewData]="taskCard"></app-task>
                     </div>
                 </div>

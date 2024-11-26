@@ -1,36 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskComponent, EnumTaskCardMode } from 'src/app/shared/task/component/task.component';
 import { TaskService } from '../../shared/task/service/task.service';
 import { TaskApiModel, TaskView } from '../../shared/task/model/task.dto';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-  taskCardList!: {
-    todo: TaskView[];
-    done: TaskView[];
-  };
-
-  TaskCardMode = EnumTaskCardMode;
-
-  constructor(public dialog: MatDialog,
-    private taskService: TaskService
-  ) {
-    this.taskCardList = {
+export class HomeComponent implements OnInit, OnDestroy {
+  taskCardList:
+    {
+      todo: TaskView[];
+      done: TaskView[];
+    }
+    =
+    {
       todo: [],
       done: []
     }
+
+  TaskCardMode = EnumTaskCardMode;
+
+  private taskSubscription!: Subscription;
+
+  constructor(public dialog: MatDialog, private taskService: TaskService) {
   }
 
 
   ngOnInit(): void {
-    this.taskService.getTasks().subscribe(t => {
+    this.taskSubscription = this.taskService.getTasks().subscribe(t => {
       this.taskCardList = this.getClassifiedTaskList(this.convertTaskListToTaskCardList(t));
     })
+  }
+
+  ngOnDestroy() {
+    this.taskSubscription.unsubscribe();
   }
 
   getClassifiedTaskList(plainTaskList: TaskView[]) {

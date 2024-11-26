@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" [ngClass]="{ 'isdone-view': mode===TaskCardMode.VIEW_DONE, 'istodo-view': mode!==TaskCardMode.VIEW_DONE }">
     <form [formGroup]="taskCardForm" (ngSubmit)="onSubmit()">
         <header class="card-header">
             <div class="card-header-title">
@@ -117,7 +117,7 @@
         <!-- Done view -->
         <ng-container *ngIf="mode === TaskCardMode.VIEW_DONE">
             <footer class="card-footer">
-                <button class="button card-footer-item" type="submit">
+                <button class="button card-footer-item isdone-view-button" type="submit">
                     <span class="icon">
                         <i class="fas fa-arrow-left" aria-hidden="true"></i>
                     </span>
