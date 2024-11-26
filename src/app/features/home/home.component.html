@@ -11,8 +11,10 @@
                     </div>
                 </section>
                 <div class="fixed-grid has-1-cols">
-                    <div class="cell p-1" *ngFor="let taskCard of taskCardList.todo">
-                        <app-task [mode]=TaskCardMode.VIEW_TODO [taskViewData]="taskCard"></app-task>
+                    <div class="section-scrollable">
+                        <div class="cell p-1" *ngFor="let taskCard of taskCardList.todo">
+                            <app-task [mode]=TaskCardMode.VIEW_TODO [taskViewData]="taskCard"></app-task>
+                        </div>
                     </div>
                     <div class="cell p-1">
                         <button class="button" (click)="openAddTaskDialog()">Add Task</button>
@@ -27,8 +29,10 @@
                     </div>
                 </section>
                 <div class="fixed-grid has-1-cols">
-                    <div class="cell p-1" *ngFor="let taskCard of taskCardList.done">
-                        <app-task [mode]=TaskCardMode.VIEW_DONE [taskViewData]="taskCard"></app-task>
+                    <div class="section-scrollable">
+                        <div class="cell p-1" *ngFor="let taskCard of taskCardList.done">
+                            <app-task [mode]=TaskCardMode.VIEW_DONE [taskViewData]="taskCard"></app-task>
+                        </div>
                     </div>
                 </div>
             </div>
