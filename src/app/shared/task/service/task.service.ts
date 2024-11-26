@@ -36,7 +36,6 @@ export class TaskService {
 
   // Update a task
   updateTask(serviceInDto: UpdateTaskServiceInDto) {
-    console.log("update")
     const request: TaskApiModel = {
       name: serviceInDto.name,
       description: serviceInDto.description,
@@ -50,7 +49,6 @@ export class TaskService {
 
   // Mark a task as Done
   markTaskAsDone(serviceInDto: MarkAsDoneServiceInDto) {
-    console.log("mark as done")
     const request: TaskApiModel = {
       isDone: serviceInDto.isDone
     }
@@ -63,7 +61,6 @@ export class TaskService {
 
   // Mark a task as Todo
   markTaskAsTodo(serviceInDto: MarkAsTodoServiceInDto) {
-    console.log("mark as todo")
     const request: TaskApiModel = {
       isDone: serviceInDto.isDone
     }
@@ -76,8 +73,6 @@ export class TaskService {
 
   // Delete a task
   deleteTask(serviceInDto: DeleteTaskServiceInDto) {
-    console.log("delete");
-    
     // Request to Server
     this.taskCollection.doc(serviceInDto.id).delete().catch(e => {
       console.error("Error during deleting a task as todo", e);

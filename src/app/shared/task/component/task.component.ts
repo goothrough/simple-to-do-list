@@ -65,7 +65,6 @@ export class TaskComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.taskCardForm);
     switch (this.mode) {
       case EnumTaskCardMode.ADD:
         this.onAdd();
@@ -85,7 +84,6 @@ export class TaskComponent implements OnInit {
   }
 
   onMarkAsDone() {
-    console.log('Done');
     const serviceInDto: MarkAsDoneServiceInDto = {
       id: this.taskViewData.id,
       isDone: true
@@ -94,7 +92,6 @@ export class TaskComponent implements OnInit {
   }
 
   openEditDialog() {
-    console.log('Edit');
     const dialogRef = this.dialog.open(TaskComponent, {
       data: {
         mode: EnumTaskCardMode.EDIT,
@@ -108,25 +105,22 @@ export class TaskComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
     });
   }
 
   onDelete() {
-    console.log('Delete');
     const isOkayToDelete: boolean = confirm("Are you sure to delete this task?")
     if (isOkayToDelete) {
       const serviceInDto: DeleteTaskServiceInDto = {
         id: this.taskViewData.id
       }
-      
+
       this.taskService.deleteTask(serviceInDto);
     }
 
   }
 
   onMarkAsTodo() {
-    console.log('Todo');
     const serviceInDto: MarkAsTodoServiceInDto = {
       id: this.taskViewData.id,
       isDone: false
@@ -135,7 +129,6 @@ export class TaskComponent implements OnInit {
   }
 
   onSave() {
-    console.log("Save");
     const serviceInDto: UpdateTaskServiceInDto = {
       id: this.taskViewData.id,
       name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
@@ -147,7 +140,6 @@ export class TaskComponent implements OnInit {
   }
 
   onAdd() {
-    console.log("Add");
     const serviceInDto: AddTaskServiceInDto = {
       name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
       description: this.taskCardForm.value.description ? this.taskCardForm.value.description : '',
@@ -160,7 +152,6 @@ export class TaskComponent implements OnInit {
   }
 
   onCancel() {
-    console.log("Cancel");
     this.dialogRef.close();
   }
 }

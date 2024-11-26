@@ -31,8 +31,6 @@ export class HomeComponent implements OnInit {
     this.taskService.getTasks().subscribe(t => {
       this.taskCardList = this.getClassifiedTaskList(this.convertTaskListToTaskCardList(t));
     })
-
-    this.taskService.getTasks().subscribe(t => { console.log(t) })
   }
 
   getClassifiedTaskList(plainTaskList: TaskView[]) {
@@ -70,7 +68,7 @@ export class HomeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+
     });
   }
 
