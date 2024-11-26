@@ -1,4 +1,5 @@
-<div class="card" [ngClass]="{ 'isdone-view': mode===TaskCardMode.VIEW_DONE, 'istodo-view': mode!==TaskCardMode.VIEW_DONE }">
+<div class="card"
+    [ngClass]="{ 'isdone-view': mode===TaskCardMode.VIEW_DONE, 'istodo-view': mode!==TaskCardMode.VIEW_DONE }">
     <form [formGroup]="taskCardForm" (ngSubmit)="onSubmit()">
         <header class="card-header">
             <div class="card-header-title">
@@ -10,6 +11,12 @@
                         <label class="label">Task Name</label>
                         <div class="control has-icons-left has-icons-right">
                             <input class="input" type="text" placeholder="" formControlName="name">
+                            <div *ngIf="taskCardForm.get('name')?.touched && taskCardForm.get('name')?.invalid">
+
+                                <small style="color: rgb(232, 145, 145);" *ngIf="taskCardForm.get('name')?.hasError('required')">
+                                    Task name is required.
+                                </small>
+                            </div>
                         </div>
                     </div>
                 </ng-container>

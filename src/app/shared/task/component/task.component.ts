@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TaskService } from 'src/app/shared/task/service/task.service';
 import { AddTaskServiceInDto, DeleteTaskServiceInDto, MarkAsDoneServiceInDto, MarkAsTodoServiceInDto, TaskView as TaskViewData, UpdateTaskServiceInDto } from '../model/task.dto';
@@ -42,7 +42,7 @@ export class TaskComponent implements OnInit {
     public dialog: MatDialog, private taskService: TaskService) {
 
     this.taskCardForm = new FormGroup({
-      name: new FormControl(''),
+      name: new FormControl('', Validators.required),
       description: new FormControl(''),
     });
 
@@ -78,7 +78,6 @@ export class TaskComponent implements OnInit {
       case EnumTaskCardMode.VIEW_DONE:
         this.onMarkAsTodo();
         break;
-
     }
 
   }
@@ -129,26 +128,38 @@ export class TaskComponent implements OnInit {
   }
 
   onSave() {
-    const serviceInDto: UpdateTaskServiceInDto = {
-      id: this.taskViewData.id,
-      name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
-      description: this.taskCardForm.value.description ? this.taskCardForm.value.description : '',
-    }
-    this.taskService.updateTask(serviceInDto);
 
-    this.dialogRef.close();
+    if (this.taskCardForm.valid) {
+      // Submit form logic
+      const serviceInDto: UpdateTaskServiceInDto = {
+        id: this.taskViewData.id,
+        name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
+        description: this.taskCardForm.value.description ? this.taskCardForm.value.description : '',
+      }
+      this.taskService.updateTask(serviceInDto);
+      this.dialogRef.close();
+
+    } else {
+      this.taskCardForm.markAllAsTouched();
+    }
+
   }
 
   onAdd() {
-    const serviceInDto: AddTaskServiceInDto = {
-      name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
-      description: this.taskCardForm.value.description ? this.taskCardForm.value.description : '',
+    if (this.taskCardForm.valid) {
+      const serviceInDto: AddTaskServiceInDto = {
+        name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
+        description: this.taskCardForm.value.description ? this.taskCardForm.value.description : '',
+      }
+
+      // Add a task
+      this.taskService.addTask(serviceInDto);
+
+      this.dialogRef.close();
+    } else {
+      this.taskCardForm.markAllAsTouched();
     }
 
-    // Add a task
-    this.taskService.addTask(serviceInDto);
-
-    this.dialogRef.close();
   }
 
   onCancel() {

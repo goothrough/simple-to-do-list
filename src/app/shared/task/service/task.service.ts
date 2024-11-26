@@ -23,6 +23,12 @@ export class TaskService {
 
   // Add a task
   addTask(serviceInDto: AddTaskServiceInDto) {
+
+    if (serviceInDto.name === '') {
+      console.error("A task name must not be empty or null");
+      return;
+    }
+
     const request: TaskApiModel = {
       isDone: false,
       ...serviceInDto
