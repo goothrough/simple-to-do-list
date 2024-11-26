@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TaskService } from 'src/app/shared/task/service/task.service';
 import { AddTaskServiceInDto, DeleteTaskServiceInDto, MarkAsDoneServiceInDto, MarkAsTodoServiceInDto, TaskView as TaskViewData, UpdateTaskServiceInDto } from '../model/task.dto';
+import { getCurrentDateTime } from 'src/app/core/date-util';
 
 export type TaskCardData = {
   id: string;
@@ -85,7 +86,8 @@ export class TaskComponent implements OnInit {
   onMarkAsDone() {
     const serviceInDto: MarkAsDoneServiceInDto = {
       id: this.taskViewData.id,
-      isDone: true
+      isDone: true,
+      updated_date: getCurrentDateTime()
     }
     this.taskService.markTaskAsDone(serviceInDto);
   }
@@ -111,7 +113,8 @@ export class TaskComponent implements OnInit {
     const isOkayToDelete: boolean = confirm("Are you sure to delete this task?")
     if (isOkayToDelete) {
       const serviceInDto: DeleteTaskServiceInDto = {
-        id: this.taskViewData.id
+        id: this.taskViewData.id,
+        updated_date: getCurrentDateTime()
       }
 
       this.taskService.deleteTask(serviceInDto);
@@ -122,19 +125,20 @@ export class TaskComponent implements OnInit {
   onMarkAsTodo() {
     const serviceInDto: MarkAsTodoServiceInDto = {
       id: this.taskViewData.id,
-      isDone: false
+      isDone: false,
+      updated_date: getCurrentDateTime()
     }
     this.taskService.markTaskAsTodo(serviceInDto);
   }
 
   onSave() {
-
     if (this.taskCardForm.valid) {
       // Submit form logic
       const serviceInDto: UpdateTaskServiceInDto = {
         id: this.taskViewData.id,
         name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
         description: this.taskCardForm.value.description ? this.taskCardForm.value.description : '',
+        updated_date: getCurrentDateTime()
       }
       this.taskService.updateTask(serviceInDto);
       this.dialogRef.close();
@@ -150,6 +154,9 @@ export class TaskComponent implements OnInit {
       const serviceInDto: AddTaskServiceInDto = {
         name: this.taskCardForm.value.name ? this.taskCardForm.value.name : '',
         description: this.taskCardForm.value.description ? this.taskCardForm.value.description : '',
+        isDone: false,
+        registered_date: getCurrentDateTime(),
+        updated_date: getCurrentDateTime(),
       }
 
       // Add a task

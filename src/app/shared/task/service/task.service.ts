@@ -12,7 +12,7 @@ export class TaskService {
   }
 
   private taskCollection = this.firestore.collection<TaskApiModel>('tasks', (ref) =>
-    ref
+    ref.orderBy('updated_date','desc')
   );
 
 
@@ -23,14 +23,12 @@ export class TaskService {
 
   // Add a task
   addTask(serviceInDto: AddTaskServiceInDto) {
-
     if (serviceInDto.name === '') {
       console.error("A task name must not be empty or null");
       return;
     }
 
     const request: TaskApiModel = {
-      isDone: false,
       ...serviceInDto
     }
 
@@ -45,6 +43,7 @@ export class TaskService {
     const request: TaskApiModel = {
       name: serviceInDto.name,
       description: serviceInDto.description,
+      updated_date: serviceInDto.updated_date
     }
 
     // Request to Server
@@ -56,7 +55,8 @@ export class TaskService {
   // Mark a task as Done
   markTaskAsDone(serviceInDto: MarkAsDoneServiceInDto) {
     const request: TaskApiModel = {
-      isDone: serviceInDto.isDone
+      isDone: serviceInDto.isDone,
+      updated_date: serviceInDto.updated_date
     }
 
     // Request to Server
@@ -68,7 +68,8 @@ export class TaskService {
   // Mark a task as Todo
   markTaskAsTodo(serviceInDto: MarkAsTodoServiceInDto) {
     const request: TaskApiModel = {
-      isDone: serviceInDto.isDone
+      isDone: serviceInDto.isDone,
+      updated_date: serviceInDto.updated_date
     }
 
     // Request to Server
